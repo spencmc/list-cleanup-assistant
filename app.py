@@ -205,7 +205,13 @@ if uploaded_file is not None:
             for col in text_cols:
                 clean_mask &= ~df[col].str.contains("test", case=False, na=False)
 
-            df_clean = df[clean_mask].copy()
+            # Keep only the original columns in the cleaned output
+            original_columns = list(df_raw.columns)
+            # Map original column names back through the rename map
+            renamed_originals = [rename_map.get(c, c) for c in original_columns]
+            # Only keep columns that exist in df_clean
+            final_columns = [c for c in renamed_originals if c in df.columns]
+            df_clean = df[clean_mask][final_columns].copy()
 
             progress.progress(96, text="Saving outputs...")
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
