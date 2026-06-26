@@ -35,73 +35,141 @@ st.title("✅ AI List Cleanup Assistant")
 st.caption("Marketing Operations — CSV QA & Cleanup Tool")
 st.divider()
 
+# --- Standard fields the app expects ---
+STANDARD_FIELDS = [
+    "Email",
+    "First Name",
+    "Last Name",
+    "Company",
+    "Job Title",
+    "Country",
+    "State",
+]
+
+def auto_match(file_columns: list, standard_fields: list) -> dict:
+    """
+    Tries to automatically match file columns to standard fields.
+    Uses case-insensitive and partial matching.
+    Returns a dict: {standard_field: matched_column or "-- Skip --"}
+    """
+    mapping = {}
+    skip = "-- Skip --"
+
+    for field in standard_fields:
+        matched = skip
+        for col in file_columns:
+            if field.lower() == col.lower():
+                matched = col
+                break
+        if matched == skip:
+            for col in file_columns:
+                if field.lower() in col.lower() or col.lower() in field.lower():
+                    matched = col
+                    break
+        mapping[field] = matched
+
+    return mapping
+
+
 # --- File Upload ---
 st.subheader("📁 Step 1: Upload Your CSV")
 uploaded_file = st.file_uploader(
     "Drag and drop your CSV file here",
     type=["csv"],
-    help="Supported format: CSV (comma-separated). Max recommended size: 50,000 rows."
+    help="Supported format: CSV. Max recommended size: 50,000 rows."
 )
 
 if uploaded_file is not None:
 
-    # --- Load File ---
     with st.spinner("Loading file..."):
         try:
-            df = load_csv_from_upload(uploaded_file)
+            df_raw = load_csv_from_upload(uploaded_file)
         except Exception as e:
             st.error(f"Could not read file: {e}")
             st.stop()
 
-    st.success(f"File loaded: **{uploaded_file.name}** — {len(df):,} rows, {len(df.columns)} columns")
+    st.success(f"File loaded: **{uploaded_file.name}** — {len(df_raw):,} rows, {len(df_raw.columns)} columns")
 
-    # --- Preview ---
     with st.expander("Preview Raw Data (first 10 rows)"):
-        st.dataframe(df.head(10), use_container_width=True)
+        st.dataframe(df_raw.head(10), use_container_width=True)
+
+    st.divider()
+
+    # --- Column Mapping ---
+    st.subheader("🗂 Step 2: Map Your Columns")
+    st.caption("Match your file's columns to the standard fields the app expects. Select '-- Skip --' for fields not in your file.")
+
+    file_columns = df_raw.columns.tolist()
+    options = ["-- Skip --"] + file_columns
+    auto_mapping = auto_match(file_columns, STANDARD_FIELDS)
+
+    col1, col2 = st.columns(2)
+    user_mapping = {}
+
+    for i, field in enumerate(STANDARD_FIELDS):
+        col = col1 if i % 2 == 0 else col2
+        default = auto_mapping.get(field, "-- Skip --")
+        default_index = options.index(default) if default in options else 0
+        selected = col.selectbox(
+            f"{field}",
+            options=options,
+            index=default_index,
+            key=f"map_{field}"
+        )
+        user_mapping[field] = selected
+
+    # Show mapping summary
+    mapped = {k: v for k, v in user_mapping.items() if v != "-- Skip --"}
+    skipped = [k for k, v in user_mapping.items() if v == "-- Skip --"]
+
+    if mapped:
+        st.success(f"✅ Mapped {len(mapped)} fields: {', '.join(mapped.keys())}")
+    if skipped:
+        st.info(f"⏭ Skipping: {', '.join(skipped)}")
 
     st.divider()
 
     # --- Run Cleanup ---
-    st.subheader("🧹 Step 2: Run Cleanup")
+    st.subheader("🧹 Step 3: Run Cleanup")
 
     if st.button("▶ Run Full Cleanup & QA Analysis", type="primary", use_container_width=True):
 
+        if not mapped:
+            st.error("Please map at least one column before running.")
+            st.stop()
+
+        # Build a renamed DataFrame using the user's mapping
+        rename_map = {v: k for k, v in mapped.items()}
+        df = df_raw.rename(columns=rename_map).copy()
+
+        # Keep unmapped columns too
         progress = st.progress(0, text="Starting...")
 
         try:
-            # Step 1 — Email
             progress.progress(10, text="Cleaning emails...")
             df = clean_emails(df)
 
-            # Step 2 — Names
             progress.progress(25, text="Cleaning names...")
             df = clean_names(df)
 
-            # Step 3 — Companies
             progress.progress(40, text="Cleaning companies...")
             df = clean_companies(df)
 
-            # Step 4 — Titles
             progress.progress(55, text="Cleaning job titles...")
             df = clean_titles(df)
 
-            # Step 5 — Geo
             progress.progress(65, text="Normalizing countries and states...")
             df = clean_geo(df)
 
-            # Step 6 — Required Fields
             progress.progress(75, text="Checking required fields...")
             df = check_required_fields(df)
 
-            # Step 7 — Duplicates
             progress.progress(85, text="Detecting duplicates...")
             df = detect_duplicates(df)
 
-            # Step 8 — QA Report
             progress.progress(92, text="Building QA report...")
             report = build_qa_report(df)
 
-            # Step 9 — Save Outputs
             progress.progress(96, text="Saving outputs...")
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             output_dir = "outputs"
@@ -131,9 +199,8 @@ if "report" in st.session_state:
     summary = report["summary"]
 
     st.divider()
-    st.subheader("📊 Step 3: Review QA Report")
+    st.subheader("📊 Step 4: Review QA Report")
 
-    # --- Score Card ---
     score = summary["quality_score"]
     risk = summary["risk_level"]
     risk_colors = {"Low": "🟢", "Medium": "🟡", "High": "🟠", "Critical": "🔴"}
@@ -147,19 +214,17 @@ if "report" in st.session_state:
 
     st.divider()
 
-    # --- Email Stats ---
     st.subheader("📧 Email Analysis")
     email = report["email"]
     e1, e2, e3, e4, e5 = st.columns(5)
-    e1.metric("Blank",       email["blank"])
-    e2.metric("Invalid",     email["invalid"])
-    e3.metric("Duplicate",   email["duplicate"])
-    e4.metric("Disposable",  email["disposable"])
-    e5.metric("Personal",    email["personal"])
+    e1.metric("Blank",      email["blank"])
+    e2.metric("Invalid",    email["invalid"])
+    e3.metric("Duplicate",  email["duplicate"])
+    e4.metric("Disposable", email["disposable"])
+    e5.metric("Personal",   email["personal"])
 
     st.divider()
 
-    # --- Breakdowns ---
     st.subheader("🌍 Breakdowns")
     b1, b2, b3 = st.columns(3)
 
@@ -189,7 +254,6 @@ if "report" in st.session_state:
 
     st.divider()
 
-    # --- Flagged Records ---
     st.subheader("🚩 Flagged Records")
     flag_cols = [c for c in df.columns if c.startswith("flag_") or c.startswith("email_flag_")]
     if flag_cols:
@@ -201,8 +265,7 @@ if "report" in st.session_state:
 
     st.divider()
 
-    # --- Downloads ---
-    st.subheader("⬇️ Step 4: Download Outputs")
+    st.subheader("⬇️ Step 5: Download Outputs")
     d1, d2, d3 = st.columns(3)
 
     with d1:
@@ -236,4 +299,4 @@ if "report" in st.session_state:
             )
 
     st.divider()
-    st.caption("AI List Cleanup Assistant — Marketing Operations | For internal use only")
+    st.caption("AI List Cleanup Assistant — G2 Marketing Operations | Built by Spencer McKinney")
