@@ -170,11 +170,19 @@ if uploaded_file is not None:
             progress.progress(92, text="Building QA report...")
             report = build_qa_report(df)
 
+            # --- Remove flagged records from cleaned output ---
+            flag_cols = [c for c in df.columns if c.startswith("flag_") or c.startswith("email_flag_")]
+            if flag_cols:
+                clean_mask = ~df[flag_cols].any(axis=1)
+                df_clean = df[clean_mask].copy()
+            else:
+                df_clean = df.copy()
+
             progress.progress(96, text="Saving outputs...")
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             output_dir = "outputs"
 
-            cleaned_csv_path = save_cleaned_csv(df, output_dir, f"cleaned_list_{timestamp}.csv")
+            cleaned_csv_path = save_cleaned_csv(df_clean, output_dir, f"cleaned_list_{timestamp}.csv")
             json_path = save_json_report(report, output_dir, f"qa_report_{timestamp}.json")
             pdf_path = os.path.join(output_dir, f"qa_report_{timestamp}.pdf")
             generate_pdf(report, pdf_path)
