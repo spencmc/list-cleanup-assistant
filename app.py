@@ -170,13 +170,42 @@ if uploaded_file is not None:
             progress.progress(92, text="Building QA report...")
             report = build_qa_report(df)
 
-            # --- Remove flagged records from cleaned output ---
+            # --- Remove flagged and low quality records from cleaned output ---
             flag_cols = [c for c in df.columns if c.startswith("flag_") or c.startswith("email_flag_")]
+
+            # Start with all rows
+            clean_mask = pd.Series([True] * len(df), index=df.index)
+
+            # Remove any flagged rows
             if flag_cols:
-                clean_mask = ~df[flag_cols].any(axis=1)
-                df_clean = df[clean_mask].copy()
-            else:
-                df_clean = df.copy()
+                clean_mask &= ~df[flag_cols].any(axis=1)
+
+            # Remove invalid emails
+            if "email_flag_invalid" in df.columns:
+                clean_mask &= ~df["email_flag_invalid"]
+
+            # Remove personal emails
+            if "email_flag_personal" in df.columns:
+                clean_mask &= ~df["email_flag_personal"]
+
+            # Remove disposable emails
+            if "email_flag_disposable" in df.columns:
+                clean_mask &= ~df["email_flag_disposable"]
+
+            # Remove duplicate emails
+            if "email_flag_duplicate" in df.columns:
+                clean_mask &= ~df["email_flag_duplicate"]
+
+            # Remove duplicate records
+            if "flag_any_duplicate" in df.columns:
+                clean_mask &= ~df["flag_any_duplicate"]
+
+            # Remove rows where any text field contains "test" (case-insensitive)
+            text_cols = [c for c in ["Email", "First Name", "Last Name", "Company", "Job Title"] if c in df.columns]
+            for col in text_cols:
+                clean_mask &= ~df[col].str.contains("test", case=False, na=False)
+
+            df_clean = df[clean_mask].copy()
 
             progress.progress(96, text="Saving outputs...")
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
