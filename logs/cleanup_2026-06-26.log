@@ -1,0 +1,72 @@
+2026-06-26 10:28:50 | INFO     | utils.file_handler   | Loaded 7 rows and 8 columns from uploaded file
+2026-06-26 10:29:37 | INFO     | utils.file_handler   | Loaded 7 rows and 8 columns from uploaded file
+2026-06-26 10:29:40 | INFO     | utils.file_handler   | Loaded 7 rows and 8 columns from uploaded file
+2026-06-26 10:29:40 | INFO     | cleaners.email_cleaner | Starting email cleanup on column: 'Email'
+2026-06-26 10:29:40 | INFO     | cleaners.email_cleaner | Email cleanup complete — Blank: 0 | Invalid: 2 | Duplicate: 1 | Disposable: 1 | Personal: 1
+2026-06-26 10:29:40 | INFO     | cleaners.name_cleaner | Cleaning first name column: 'First Name'
+2026-06-26 10:29:40 | INFO     | cleaners.name_cleaner | First name cleanup complete — Suspicious: 1
+2026-06-26 10:29:40 | INFO     | cleaners.name_cleaner | Cleaning last name column: 'Last Name'
+2026-06-26 10:29:40 | INFO     | cleaners.name_cleaner | Last name cleanup complete — Suspicious: 0
+2026-06-26 10:29:40 | INFO     | cleaners.company_cleaner | Cleaning company column: 'Company'
+2026-06-26 10:29:40 | INFO     | cleaners.company_cleaner | Company cleanup complete — Suspicious: 2
+2026-06-26 10:29:40 | INFO     | cleaners.title_cleaner | Cleaning job title column: 'Job Title'
+2026-06-26 10:29:40 | INFO     | cleaners.title_cleaner | Title cleanup complete — Suspicious: 1
+2026-06-26 10:29:40 | INFO     | cleaners.geo_cleaner | Normalizing country column: 'Country'
+2026-06-26 10:29:40 | INFO     | cleaners.geo_cleaner | Country cleanup complete — Normalized: 6 | Unknown: 0
+2026-06-26 10:29:40 | INFO     | cleaners.geo_cleaner | Normalizing state column: 'State'
+2026-06-26 10:29:40 | INFO     | cleaners.geo_cleaner | State cleanup complete — Normalized: 3
+2026-06-26 10:29:40 | INFO     | cleaners.field_checker | Checking required fields: ['Email', 'First Name']
+2026-06-26 10:29:40 | INFO     | cleaners.field_checker | Required field check complete — Rows with missing fields: 1
+2026-06-26 10:29:40 | INFO     | detectors.duplicate_detector | Checking for duplicate emails...
+2026-06-26 10:29:40 | INFO     | detectors.duplicate_detector | Duplicate emails found: 1
+2026-06-26 10:29:40 | INFO     | detectors.duplicate_detector | Checking for duplicate email + company combinations...
+2026-06-26 10:29:40 | INFO     | detectors.duplicate_detector | Duplicate email + company found: 1
+2026-06-26 10:29:40 | INFO     | detectors.duplicate_detector | Checking fuzzy duplicate name + company (threshold: 85)...
+2026-06-26 10:29:40 | INFO     | detectors.duplicate_detector | Fuzzy duplicate name + company found: 1
+2026-06-26 10:29:40 | INFO     | detectors.duplicate_detector | Duplicate detection complete — Total flagged: 1
+2026-06-26 10:29:40 | INFO     | reporters.qa_report  | QA Report built — Score: 73.9 | Risk: Medium
+2026-06-26 10:29:40 | INFO     | utils.file_handler   | Cleaned CSV saved to: outputs/cleaned_list_20260626_102940.csv
+2026-06-26 10:29:40 | INFO     | utils.file_handler   | JSON report saved to: outputs/qa_report_20260626_102940.json
+2026-06-26 10:29:40 | INFO     | reporters.pdf_generator | PDF report saved to: outputs/qa_report_20260626_102940.pdf
+2026-06-26 10:29:54 | INFO     | utils.file_handler   | Loaded 7 rows and 8 columns from uploaded file
+2026-06-26 10:30:38 | INFO     | utils.file_handler   | Loaded 7 rows and 8 columns from uploaded file
+2026-06-26 10:47:42 | INFO     | cleaners.email_cleaner | Starting email cleanup on column: 'Email'
+2026-06-26 10:47:42 | INFO     | cleaners.email_cleaner | Email cleanup complete — Blank: 0 | Invalid: 0 | Duplicate: 0 | Disposable: 0 | Personal: 1
+2026-06-26 10:47:42 | INFO     | cleaners.email_cleaner | Starting email cleanup on column: 'Email'
+2026-06-26 10:47:42 | INFO     | cleaners.email_cleaner | Email cleanup complete — Blank: 2 | Invalid: 0 | Duplicate: 0 | Disposable: 0 | Personal: 0
+2026-06-26 10:47:42 | INFO     | cleaners.email_cleaner | Starting email cleanup on column: 'Email'
+2026-06-26 10:47:42 | INFO     | cleaners.email_cleaner | Email cleanup complete — Blank: 0 | Invalid: 0 | Duplicate: 1 | Disposable: 0 | Personal: 0
+2026-06-26 10:47:42 | INFO     | cleaners.email_cleaner | Starting email cleanup on column: 'Email'
+2026-06-26 10:47:42 | INFO     | cleaners.email_cleaner | Email cleanup complete — Blank: 0 | Invalid: 0 | Duplicate: 0 | Disposable: 1 | Personal: 0
+2026-06-26 10:47:42 | INFO     | cleaners.email_cleaner | Starting email cleanup on column: 'Email'
+2026-06-26 10:47:42 | INFO     | cleaners.email_cleaner | Email cleanup complete — Blank: 0 | Invalid: 0 | Duplicate: 0 | Disposable: 0 | Personal: 1
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | Normalizing country column: 'Country'
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | Country cleanup complete — Normalized: 3 | Unknown: 0
+2026-06-26 10:47:42 | WARNING  | cleaners.geo_cleaner | State column 'State' not found. Skipping.
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | Normalizing country column: 'Country'
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | Country cleanup complete — Normalized: 1 | Unknown: 0
+2026-06-26 10:47:42 | WARNING  | cleaners.geo_cleaner | State column 'State' not found. Skipping.
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | Normalizing country column: 'Country'
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | Country cleanup complete — Normalized: 0 | Unknown: 0
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | Normalizing state column: 'State'
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | State cleanup complete — Normalized: 1
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | Normalizing country column: 'Country'
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | Country cleanup complete — Normalized: 1 | Unknown: 0
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | Normalizing state column: 'State'
+2026-06-26 10:47:42 | INFO     | cleaners.geo_cleaner | State cleanup complete — Normalized: 1
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Cleaning first name column: 'First Name'
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | First name cleanup complete — Suspicious: 0
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Cleaning last name column: 'Last Name'
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Last name cleanup complete — Suspicious: 0
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Cleaning first name column: 'First Name'
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | First name cleanup complete — Suspicious: 0
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Cleaning last name column: 'Last Name'
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Last name cleanup complete — Suspicious: 0
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Cleaning first name column: 'First Name'
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | First name cleanup complete — Suspicious: 1
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Cleaning last name column: 'Last Name'
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Last name cleanup complete — Suspicious: 0
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Cleaning first name column: 'First Name'
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | First name cleanup complete — Suspicious: 0
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Cleaning last name column: 'Last Name'
+2026-06-26 10:47:42 | INFO     | cleaners.name_cleaner | Last name cleanup complete — Suspicious: 0

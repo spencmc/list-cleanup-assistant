@@ -1,0 +1,215 @@
+required_fields:
+  - Email
+  - First Name
+
+email:
+  column_name: "Email"
+  normalize_to_lowercase: true
+  strip_whitespace: true
+  disposable_domains:
+    - mailinator.com
+    - guerrillamail.com
+    - tempmail.com
+    - throwaway.email
+    - yopmail.com
+    - spamgourmet.com
+    - fakeinbox.com
+    - mailnull.com
+    - discard.email
+    - trashmail.com
+  personal_domains:
+    - gmail.com
+    - yahoo.com
+    - hotmail.com
+    - outlook.com
+    - aol.com
+    - icloud.com
+    - me.com
+    - mac.com
+    - live.com
+    - msn.com
+    - protonmail.com
+    - zoho.com
+
+names:
+  first_name_column: "First Name"
+  last_name_column: "Last Name"
+  apply_title_case: true
+  strip_whitespace: true
+  suspicious_name_values:
+    - "test"
+    - "n/a"
+    - "unknown"
+    - "none"
+    - "null"
+    - "asdf"
+    - "123"
+
+company:
+  column_name: "Company"
+  collapse_spaces: true
+  strip_whitespace: true
+  apply_title_case: true
+  suspicious_company_values:
+    - "test"
+    - "n/a"
+    - "unknown"
+    - "none"
+    - "null"
+    - "asdf"
+    - "123"
+    - "company"
+    - "acme"
+
+job_title:
+  column_name: "Job Title"
+  strip_whitespace: true
+  always_uppercase_words:
+    - "VP"
+    - "CEO"
+    - "CFO"
+    - "COO"
+    - "CTO"
+    - "CMO"
+    - "CRO"
+    - "SVP"
+    - "EVP"
+    - "AVP"
+    - "MD"
+    - "HR"
+    - "IT"
+  always_lowercase_words:
+    - "of"
+    - "the"
+    - "and"
+    - "in"
+    - "at"
+    - "for"
+  suspicious_title_values:
+    - "test"
+    - "n/a"
+    - "na"
+    - "unknown"
+    - "none"
+    - "null"
+    - "asdf"
+    - "employee"
+    - "staff"
+
+country:
+  column_name: "Country"
+  normalization_map:
+    "US": "United States"
+    "USA": "United States"
+    "U.S.": "United States"
+    "U.S.A.": "United States"
+    "United States of America": "United States"
+    "america": "United States"
+    "UK": "United Kingdom"
+    "U.K.": "United Kingdom"
+    "Great Britain": "United Kingdom"
+    "England": "United Kingdom"
+    "CA": "Canada"
+    "CAN": "Canada"
+    "AU": "Australia"
+    "AUS": "Australia"
+    "DE": "Germany"
+    "Deutschland": "Germany"
+    "FR": "France"
+    "IN": "India"
+    "JP": "Japan"
+    "BR": "Brazil"
+    "NL": "Netherlands"
+    "The Netherlands": "Netherlands"
+    "Holland": "Netherlands"
+    "SG": "Singapore"
+    "IE": "Ireland"
+    "ES": "Spain"
+    "IT": "Italy"
+    "SE": "Sweden"
+    "CH": "Switzerland"
+    "MX": "Mexico"
+
+state:
+  column_name: "State"
+  normalization_map:
+    "AL": "Alabama"
+    "AK": "Alaska"
+    "AZ": "Arizona"
+    "AR": "Arkansas"
+    "CA": "California"
+    "CO": "Colorado"
+    "CT": "Connecticut"
+    "DE": "Delaware"
+    "FL": "Florida"
+    "GA": "Georgia"
+    "HI": "Hawaii"
+    "ID": "Idaho"
+    "IL": "Illinois"
+    "IN": "Indiana"
+    "IA": "Iowa"
+    "KS": "Kansas"
+    "KY": "Kentucky"
+    "LA": "Louisiana"
+    "ME": "Maine"
+    "MD": "Maryland"
+    "MA": "Massachusetts"
+    "MI": "Michigan"
+    "MN": "Minnesota"
+    "MS": "Mississippi"
+    "MO": "Missouri"
+    "MT": "Montana"
+    "NE": "Nebraska"
+    "NV": "Nevada"
+    "NH": "New Hampshire"
+    "NJ": "New Jersey"
+    "NM": "New Mexico"
+    "NY": "New York"
+    "NC": "North Carolina"
+    "ND": "North Dakota"
+    "OH": "Ohio"
+    "OK": "Oklahoma"
+    "OR": "Oregon"
+    "PA": "Pennsylvania"
+    "RI": "Rhode Island"
+    "SC": "South Carolina"
+    "SD": "South Dakota"
+    "TN": "Tennessee"
+    "TX": "Texas"
+    "UT": "Utah"
+    "VT": "Vermont"
+    "VA": "Virginia"
+    "WA": "Washington"
+    "WV": "West Virginia"
+    "WI": "Wisconsin"
+    "WY": "Wyoming"
+    "DC": "District of Columbia"
+    "Calif.": "California"
+    "Fla.": "Florida"
+    "N.Y.": "New York"
+    "Tex.": "Texas"
+
+duplicates:
+  check_email: true
+  check_company_and_name: true
+  check_email_and_company: true
+  fuzzy_match_threshold: 85
+
+quality_score:
+  valid_email_rate: 30
+  no_duplicates: 20
+  required_fields_complete: 20
+  name_company_quality: 15
+  no_disposable_personal: 15
+  risk_levels:
+    low: 85
+    medium: 65
+    high: 40
+
+output:
+  output_directory: "outputs"
+  cleaned_csv_filename: "cleaned_list.csv"
+  qa_report_pdf_filename: "qa_report.pdf"
+  qa_report_json_filename: "qa_report.json"
+  include_original_values: true
+  include_flag_columns: true

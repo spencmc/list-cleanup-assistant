@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install *)",
+      "Read(//opt/homebrew/**)",
+      "Bash(command -v pyenv)",
+      "Bash(command -v brew)"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+First Name,Last Name,Email,Company,Job Title,Country,State,Lead Source
+JOHN,SMITH,john.smith@acme.com,acme corp,vp sales,USA,CA,Webinar
+mARY,JONES,mary.jones@gmail.com,  GLOBEX  ,director marketing,United States of America,California,Event
+test,user,notanemail,Test,asdf,US,TX,Partner
+John,Smith,john.smith@acme.com,Acme Corp,VP Sales,United States,Texas,Webinar
+sarah,CONNOR,sarah.connor@mailinator.com,Skynet,ceo,UK,n/a,Vendor
+JAMES,wilson,james.wilson@techcorp.com,tech corp,svp engineering,CA,,Referral
+,empty,@bademail.com,Unknown,n/a,USA,NY,Event

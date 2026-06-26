@@ -1,0 +1,48 @@
+{
+  "summary": {
+    "total_records": 7,
+    "valid_records": 5,
+    "quality_score": 73.9,
+    "risk_level": "Medium"
+  },
+  "email": {
+    "blank": 0,
+    "invalid": 2,
+    "duplicate": 1,
+    "disposable": 1,
+    "personal": 1
+  },
+  "duplicates": {
+    "total_duplicates": 1
+  },
+  "required_fields": {
+    "rows_missing_required": 1,
+    "complete_rate_pct": 85.7
+  },
+  "data_quality": {
+    "suspicious_names": 1,
+    "suspicious_companies": 2
+  },
+  "breakdowns": {
+    "top_countries": {
+      "United States": 5,
+      "United Kingdom": 1,
+      "Canada": 1
+    },
+    "top_titles": {
+      "VP Sales": 2,
+      "Director Marketing": 1,
+      "Asdf": 1,
+      "CEO": 1,
+      "SVP Engineering": 1
+    },
+    "top_companies": {
+      "Acme Corp": 2,
+      "Globex": 1,
+      "Test": 1,
+      "Skynet": 1,
+      "Tech Corp": 1,
+      "Unknown": 1
+    }
+  }
+}
